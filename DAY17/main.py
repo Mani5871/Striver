@@ -1,68 +1,89 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 
-i = 1
-while i <= 2:
 
-	driver = webdriver.Firefox(executable_path=r"C:\\Users\\GILMA\\Desktop\\selenium\\geckodriver.exe")
-	driver.maximize_window() 
-	driver.get('https://rvrjcce.codetantra.com/login.jsp')
-	print(driver.title)
 
-	user_name = driver.find_element_by_name("loginId")
-	password = driver.find_element_by_name("password")
-	login = driver.find_element_by_id("loginBtn")
+driver = webdriver.Chrome(executable_path=r"C:\Users\ratna\Desktop\Selenium\chromedriver_win32\chromedriver.exe")
+driver.maximize_window() 
+driver.get('https://rvrjcce.codetantra.com/login.jsp')
+print(driver.title)
 
-	user_name.send_keys("manideepak650@gmail.com")
-	password.send_keys("1")
-	login.click()
-	print("Login Successful")
+user_name = driver.find_element_by_name("loginId")
+password = driver.find_element_by_name("password")
+login = driver.find_element_by_id("loginBtn")
 
-	time.sleep(1)
-	while True:
-		try:
-			meetings = driver.find_element(By.XPATH,"//a[@title = 'Click here to view Meetings']")
-			meetings.click()
+user_name.send_keys("manideepak650@gmail.com")
+password.send_keys("1")
+login.click()
+print("Login Successful")
+
+time.sleep(1)
+while True:
+	try:
+		meetings = driver.find_element(By.XPATH,"//a[@title = 'Click here to view Meetings']")
+		meetings.click()
+		break
+	except:
+		time.sleep(2)
+
+time.sleep(1)
+while True:
+	try:
+		flag = 0
+		classes = driver.find_elements_by_class_name("fc-time-grid-event")
+		classes[0].click()
+		break
+		for item in classes:
+			attrs = driver.execute_script('var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;', item)
+			if 'background' in attrs:
+				print('g')
+				if attrs['background'] == 'green':
+					print(item)
+					flag = 1
+					item.click()
+					print('green')
+					break
+		print(len(classes))
+		if flag == 1:
 			break
-		except:
-			time.sleep(2)
+		break
+	except:
+		time.sleep(2)
 
-	time.sleep(1)
-	while True:
+
+# classes[0].click()
+while True:
+	try:
+		close = driver.find_element(By.XPATH, "//a[@href = '/secure/tla/m.jsp']")
 		try:
-			classes = driver.find_elements_by_class_name("fc-time-grid-event")
-			print(len(classes))
-			# classes = driver.find_element(By.XPATH, "//a[@style='color: white; background: green none repeat scroll 0% 0%; inset: 450.397px 0% -480.397px; z-index: 1;']")
-			break
+			join = driver.find_element(By.XPATH, "//a[@role = 'button']")
+			join.click()
+			
 		except:
-			time.sleep(2)
+			break
+	except:
+		time.sleep(2)
 
+time.sleep(20)
 	
-	classes[3].click()
-	while True:
-		try:
-			close = driver.find_element(By.XPATH, "//a[@href = '/secure/tla/m.jsp']")
-			try:
-				join = driver.find_element(By.XPATH, "//a[@role = 'button']")
-				join.click()
-			except:
-				break
-		except:
-			time.sleep(2)
+print("Waiting for listen")
 
-	while True:
-		try:
-			print("Waiting for listen")
-			listen = driver.find_elements_by_tag_name("button")
-			print(listen, len(listen))
-			listen[2].click()
+iframe = driver.find_element_by_xpath("//iframe[@id='frame']")
+driver.switch_to.frame(iframe)
+listen = driver.find_elements_by_tag_name("button")
+for item in listen:
+	attrs = driver.execute_script('var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;', item)
+	if 'aria-label' in attrs:
+		if attrs['aria-label'] == 'Listen only':
+			item.click()
 			break
-		except:
-			time.sleep(5)
+
+time.sleep(5)
 
 
-	time.sleep(60)
-	driver.quit()
-	i += 1
-	time.sleep(10)
+time.sleep(60)
+driver.quit()
+time.sleep(10)
