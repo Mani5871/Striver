@@ -1,4 +1,4 @@
-// Time Complexity : O(V ^2)
+// Time Complexity : O(E log V)
 // Space Complexity : O(V)
 // https://practice.geeksforgeeks.org/problems/minimum-spanning-tree/1#
 
