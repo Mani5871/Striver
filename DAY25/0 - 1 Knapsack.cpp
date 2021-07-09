@@ -1,4 +1,4 @@
-// Time Complexity : O(2 ^ N)
+// Time Complexity : O(N ^ 2)
 // Space Complexity : O(N)
 // https://practice.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1#
 
