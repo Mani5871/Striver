@@ -33,6 +33,21 @@ int _stack ::pop()
     }
 }
 
+/*
+val < min
+val - min < 0
+val + val - min < 0
+2 * val - min < 0
+
+
+2 * min - (s.top())
+2 * min - (2 * val - prev_min)
+2 * min - (2 * min - prev_min) (since val == min)
+
+*/
+
+
+
 /*push element x into the stack*/
 void _stack::push(int x)
 {
