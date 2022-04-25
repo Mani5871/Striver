@@ -1,77 +1,24 @@
-// Time Complexity : O(N)
-// Space Complexity : O(N)
-// https://practice.geeksforgeeks.org/problems/maximum-of-all-subarrays-of-size-k3101/1#
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
 
-class Solution
-{
-    public:
-    //Function to find maximum of each subarray of size k.
-    vector <int> max_of_subarrays(int *arr, int n, int k)
-    {
-        int i, j, max1 = INT_MIN;
-        if(k == n)
+        vector<int>result;
+        deque<int>dq;
+
+        for(int i = 0; i < nums.size(); i++) 
         {
-            for(i = 0; i < n; i ++)
-                if(arr[i] > max1)
-                    max1 = arr[i];
-                    
-            return {max1};
+            if(!dq.empty() and dq.front() == i - k)
+                dq.pop_front();
+
+            while(!dq.empty() and nums[dq.back()] <= nums[i])
+                dq.pop_back();    
+
+            dq.push_back(i);
+
+            if(i >= k - 1)
+                result.push_back(nums[dq.front()]);
         }
-        
-        list <int> li;
-        vector <int> res;
-        
-        i = 0;
-        j = 0;
-        
-        for(i = 0; i < n; i ++)
-        {
-            if(j >= n)
-                break;
-                
-            while(j - i + 1 <= k)
-            {
-                if(li.size() == 0)
-                {
-                    li.push_back(arr[j]);
-                    j ++;
-                    continue;
-                }
-                
-                int flag = 0;
-                while(arr[j] > li.front())
-                {
-                    flag = 1;
-                    li.pop_front();
-                    
-                    if(li.size() == 0)
-                        break;
-                }
-                
-                if(flag)
-                {
-                    li.push_back(arr[j ++]);
-                    continue;
-                }
-                
-                while(arr[j] > li.back())
-                {
-                    li.pop_back();
-                    
-                    if(li.size() == 0)
-                        break;
-                }
-                    
-                li.push_back(arr[j ++]);
-            }
-            
-            res.push_back(li.front());
-            
-            if(li.front() == arr[i])
-                li.pop_front();
-        }
-        
-        return res;
+        return result;
         
     }
 };
