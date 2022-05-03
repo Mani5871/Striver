@@ -9,18 +9,12 @@ public:
         
         if(!head -> next)
             return NULL;
-
-        int cnt = 1;
-        while(cnt ++ < n)
-            ptr = ptr -> next;
-
-        left = ptr;
         
-        if(!left -> next)
-        {
-            head = head -> next;
-            return head;
-        }
+        for(int i = 1; i < n; i ++)
+            ptr = ptr -> next;
+        
+        if(!ptr -> next)
+            return head -> next;
         
         while(ptr -> next)
         {
@@ -28,9 +22,8 @@ public:
             right = right -> next;
             ptr = ptr -> next;
         }
+        
         prev -> next = right -> next;
         return head;
     }
 };
-// @lc code=end
-
